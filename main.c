@@ -33,7 +33,6 @@ struct Peer* peers[MAX_PEERS]; // @TODO Free memory allocated to peers
 
 int bind_to_best(struct addrinfo*);
 void* hear(void*);
-void broadcast(void*);
 void* populate_peer_info(struct Peer*);
 void* mark_peer_as_connected(struct sockaddr_in*, socklen_t*);
 
