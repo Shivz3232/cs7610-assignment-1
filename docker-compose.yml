@@ -15,29 +15,29 @@ services:
     container_name: "peer2"
     command: -h hostsfile.txt
 
-  # peer3:
-  #   image: prj1
-  #   networks:
-  #     - cs7610
-  #   hostname: "peer3"
-  #   container_name: "peer3"
-  #   command: -h hostsfile.txt
+  peer3:
+    image: prj1
+    networks:
+      - cs7610
+    hostname: "peer3"
+    container_name: "peer3"
+    command: -h hostsfile.txt
 
-  # peer4:
-  #   image: prj1
-  #   networks:
-  #     - cs7610
-  #   hostname: "peer4"
-  #   container_name: "peer4"
-  #   command: -h hostsfile.txt
+  peer4:
+    image: prj1
+    networks:
+      - cs7610
+    hostname: "peer4"
+    container_name: "peer4"
+    command: -h hostsfile.txt
 
-  # peer5:
-  #   image: prj1
-  #   networks:
-  #     - cs7610
-  #   hostname: "peer5"
-  #   container_name: "peer5"
-  #   command: -h hostsfile.txt
+  peer5:
+    image: prj1
+    networks:
+      - cs7610
+    hostname: "peer5"
+    container_name: "peer5"
+    command: -h hostsfile.txt
 
 networks:
   # The presence of these objects is sufficient to define them
