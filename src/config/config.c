@@ -25,6 +25,7 @@ void* initializeEnvVariables() {
   initializeHostsFilePath();
   initializeMaxPeerNameSize();
   initializeMaxPeers();
+  initializeMaxMessageSize();
 
   return NULL;
 }
