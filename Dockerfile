@@ -21,4 +21,5 @@ COPY makefile .
 
 RUN make compile
 
-CMD ["make", "execute"]
+# CMD ["make", "execute"]
+ENTRYPOINT ${APP_HOME}/bin/prj1;
