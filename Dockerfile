@@ -2,17 +2,23 @@ FROM ubuntu:22.04
 
 RUN apt-get update
 RUN apt-get install -y gcc
-# RUN apt-get install -y netcat iputils-ping
+RUN apt-get install make
 
 ENV APP_HOME=/usr/src/prj1
 
 RUN mkdir -p ${APP_HOME}
 WORKDIR ${APP_HOME}
 
-COPY . .
+RUN mkdir -p ${APP_HOME}/src
+COPY src ${APP_HOME}/src
 
-ENV PORT=3000
+COPY hostsfile.txt ${APP_HOME}
 
-RUN gcc main.c -o main
+RUN mkdir -p ${APP_HOME}/bin
 
-ENTRYPOINT ${APP_HOME}/main
+COPY .env .
+COPY makefile .
+
+RUN make compile
+
+CMD ["make", "execute"]
