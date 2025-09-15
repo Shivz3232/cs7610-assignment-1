@@ -57,6 +57,9 @@ int main(int argc, char const* argv[]) {
   debug("Self socket created successfully\n");
   debug("============================================\n\n\n\n");
 
+  // ----------------------------------------------
+  // Start listening for peers in a separate thread
+  // ----------------------------------------------
   debug("============================================\n");
   debug("Starting listener.\n");
   pthread_t listener_thread;
@@ -65,6 +68,9 @@ int main(int argc, char const* argv[]) {
   info("Listener started\n");
   debug("============================================\n\n\n\n");
 
+  // ------------------------
+  // Begin sending heartbeats
+  // ------------------------
   char message[4] = "PING";
   while (1) {
     for (int i = 0; i < numPeers; i++) {
