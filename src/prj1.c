@@ -22,13 +22,18 @@ int main(int argc, char const* argv[]) {
   debug("Successfully initialized environment Variables.\n");
   debug("============================================\n\n\n\n");
 
-  peers = malloc(numPeers * sizeof(struct Peer*));
+  peers = malloc(maxPeers * sizeof(struct Peer*));
 
   debug("============================================\n");
   debug("Parsing hosts file.\n");
   parseHostsfile(peers);
   debug("Successfully parsed hosts file.\n");
   debug("============================================\n\n\n\n");
+
+  if (numPeers == 0) {
+    info("Hostsfile empty, no peers found.\n");
+    return 0;
+  }
 
   struct addrinfo hints, *addr_info;
 
@@ -82,6 +87,7 @@ int main(int argc, char const* argv[]) {
   debug("============================================\n");
   close(socket_fd);
   freeaddrinfo(addr_info);
+  freePeers(peers);
   debug("Socket closed\n");
   debug("Processs finished\n");
   debug("============================================\n\n\n\n");
@@ -90,7 +96,7 @@ int main(int argc, char const* argv[]) {
 }
 
 void* hear(void* input) {  
-  int peer_fd = *(int*)input;
+  int socket_fd = *(int*)input;
   
   struct sockaddr_in peer_addr;
   socklen_t peer_addr_len = sizeof(peer_addr);
@@ -100,7 +106,7 @@ void* hear(void* input) {
   while (1) {
     memset(&message, 0, (size_t) maxMessageSize);
     
-    if ((numbytes = recvfrom(peer_fd, message, maxMessageSize-1, 0, (struct sockaddr*)&peer_addr, &peer_addr_len)) == -1) {
+    if ((numbytes = recvfrom(socket_fd, message, maxMessageSize-1, 0, (struct sockaddr*)&peer_addr, &peer_addr_len)) == -1) {
       perror("recvfrom");
       exit(1);
     }
@@ -111,4 +117,15 @@ void* hear(void* input) {
   info("Listener finished.\n");
 
   return NULL;
+}
+
+void freePeers(struct Peer **peers) {
+    if (!peers) return;
+    for (int i = 0; i < maxPeers; i++) {
+        if (peers[i]) {
+            free(peers[i]->name);
+            free(peers[i]);
+        }
+    }
+    free(peers);
 }
