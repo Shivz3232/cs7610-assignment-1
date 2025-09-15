@@ -66,7 +66,7 @@ int main(int argc, char const* argv[]) {
   debug("============================================\n\n\n\n");
 
   char message[4] = "PING";
-  while (connectedPeers < numPeers) {
+  while (1) {
     for (int i = 0; i < numPeers; i++) {
       if (peers[i]->connected) {
         continue;
@@ -81,8 +81,6 @@ int main(int argc, char const* argv[]) {
 
     sleep(10);
   }
-
-  info("READY\n"); // GREAT SUCCESS!
 
   debug("============================================\n");
   close(socket_fd);
@@ -101,9 +99,10 @@ void* hear(void* input) {
   struct sockaddr_in peer_addr;
   socklen_t peer_addr_len = sizeof(peer_addr);
 
+  int ready = 0;
   int numbytes;
   char message[maxMessageSize];
-  while (1) {
+  while (ready == 0) {
     memset(&message, 0, (size_t) maxMessageSize);
     
     if ((numbytes = recvfrom(socket_fd, message, maxMessageSize-1, 0, (struct sockaddr*)&peer_addr, &peer_addr_len)) == -1) {
@@ -112,7 +111,13 @@ void* hear(void* input) {
     }
 
     markPeerAsConnected(peers, &peer_addr, &peer_addr_len);
+
+    if (connectedPeers == numPeers) {
+      ready = 1;
+    }
   }
+
+  info("READY");
 
   info("Listener finished.\n");
 
