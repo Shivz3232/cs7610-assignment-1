@@ -63,6 +63,11 @@ void* parseHostsfile(struct Peer* peers[]) {
     if (len > 0 && line[len - 1] == '\n') {
       line[len - 1] = '\0';
     }
+
+    // Skip myself
+    if (strcmp(hostName, line) == 0) {
+      continue;
+    }
     
     struct Peer* peer = malloc(sizeof(struct Peer));
     if (!peer) {
