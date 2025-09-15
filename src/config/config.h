@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 extern char* cEnv;
+extern char* hostName;
 extern char* port;
 extern char* hostsFilePath;
 extern int maxPeerNameSize;
