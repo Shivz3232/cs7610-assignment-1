@@ -45,9 +45,7 @@ int bindToBest(struct addrinfo* addr_info) {
 }
 
 void* parseHostsfile(struct Peer* peers[]) {
-  FILE *hostsfile;
-
-  hostsfile = fopen(hostsFilePath, "r");
+  FILE* hostsfile = fopen(hostsFilePath, "r");
   if (hostsfile == NULL) {
     perror("fopen");
     exit(EXIT_FAILURE);
@@ -55,8 +53,9 @@ void* parseHostsfile(struct Peer* peers[]) {
 
   char line[maxPeerNameSize];
   while(fgets(line, maxPeerNameSize, hostsfile) != NULL) {
-    if (numPeers > maxPeers) {
+    if (numPeers >= maxPeers) {
       info("Exeeded maximum number of supported peers.\n");
+      fclose(hostsfile);
       exit(1);
     }
 
@@ -66,26 +65,20 @@ void* parseHostsfile(struct Peer* peers[]) {
     }
     
     struct Peer* peer = malloc(sizeof(struct Peer));
-    peer->name = malloc(sizeof(maxPeerNameSize));
+    if (!peer) {
+      perror("malloc");
+      fclose(hostsfile);
+      exit(EXIT_FAILURE);
+    }
 
     peer->id = numPeers + 1;
-    strcpy(peer->name, line);
+    peer->name = strdup(line);
     peer->connected = 0;
 
     peers[numPeers] = peer;
     populatePeerInfo(peer);
     
     numPeers += 1;
-  }
-
-  if (numPeers > 0) {
-    debug("Number of peers: %d\n", numPeers);
-    for (int i = 0; i < numPeers; i++) {
-      debug("Peer %d: %s\n", peers[i]->id, peers[i]->name);
-    }
-  } else {
-    info("Hostsfile empty");
-    exit(1);
   }
   
   fclose(hostsfile);
