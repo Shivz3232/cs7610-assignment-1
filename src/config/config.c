@@ -7,8 +7,8 @@
 #include "../logger/logger.h"
 
 // DEFAULTS
-char* cEnv = "development"; // To enable debug logs
-// char* cEnv = "production";
+// char* cEnv = "development"; // To enable debug logs
+char* cEnv = "production";
 char* hostName;
 char* port = "3000";
 char* hostsFilePath = "hostsfile.txt";
