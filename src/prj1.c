@@ -68,10 +68,6 @@ int main(int argc, char const* argv[]) {
   char message[4] = "PING";
   while (1) {
     for (int i = 0; i < numPeers; i++) {
-      if (peers[i]->connected) {
-        continue;
-      }
-      
       int num_bytes;
       if ((num_bytes = sendto(socket_fd, &message, strlen(message), 0, peers[i]->chosen_addr_info->ai_addr, peers[i]->chosen_addr_info->ai_addrlen)) < 0) {
           perror("sendto");
