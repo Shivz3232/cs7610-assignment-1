@@ -1,7 +1,6 @@
 #include "config.h"
 
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 
 #include "../logger/logger.h"
@@ -32,85 +31,78 @@ void* initializeEnvVariables() {
 }
 
 void* initializeCEnv() {
-  char* value = getenv("C_ENV");
+  cEnv = getenv("C_ENV");
 
-  if (!value) {
-    cEnv = strdup("3000");
-    info("C_ENV not set, using default: %s\n", cEnv);
-  } else {
-    cEnv = strdup(value);
-    debug("C_ENV: %s\n", cEnv);
+  if (!cEnv) {
+    fprintf(stderr, "Failed to initialize C_ENV.\n");
+    exit(1);
   }
   
   return NULL;
 }
 
 void* initializePort() {
-  char* value = getenv("PORT");
-
-  if (!value) {
-    port = strdup("3000");
-    info("PORT not set, using default: %s\n", port);
-  } else {
-    port = strdup(value);  // Copy to heap
+  port = getenv("PORT");
+  if (port) {
     debug("PORT: %s\n", port);
+  } else {
+    info("Failed to initialize PORT.\n");
+    exit(1);
   }
 
   return NULL;
 }
 
 void* initializeHostsFilePath() {
-  char* value = getenv("HOSTSFILE_PATH");
-
-  if (!value) {
-    hostsFilePath = strdup("hostsfile.txt");
-    info("HOSTSFILE_PATH not set, using default: %s\n", hostsFilePath);
-  } else {
-    hostsFilePath = strdup(value);
+  hostsFilePath = getenv("HOSTSFILE_PATH");
+  if (hostsFilePath) {
     debug("HOSTSFILE_PATH: %s\n", hostsFilePath);
+  } else {
+    info("Failed to initialize HOSTSFILE_PATH.\n");
+    exit(1);
   }
 
   return NULL;
 }
 
 void* initializeMaxPeerNameSize() {
-  char* value = getenv("MAX_PEER_NAME_SIZE");
-
-  if (!value) {
-    maxPeerNameSize = 100;
-    info("MAX_PEER_NAME_SIZE not set, using default: %d\n", maxPeerNameSize);
+  char const* value = getenv("MAX_PEER_NAME_SIZE");
+  if (value) {
+    debug("MAX_PEER_NAME_SIZE: %s\n", value);
   } else {
-    maxPeerNameSize = atoi(value);
-    debug("MAX_PEER_NAME_SIZE: %d\n", maxPeerNameSize);
+    info("Failed to initialize MAX_PEER_NAME_SIZE.\n");
+    exit(1);
   }
+
+  maxPeerNameSize = atoi(value);
   
   return NULL;
 }
 
 void* initializeMaxPeers() {
-  char* value = getenv("MAX_PEERS");
-
-  if (!value) {
-    maxPeers = 100;
-    info("MAX_PEERS not set, using default: %d\n", maxPeers);
+  char const* value = getenv("MAX_PEERS");
+  if (value) {
+    debug("MAX_PEERS: %s\n", value);
   } else {
-    maxPeers = atoi(value);
-    debug("MAX_PEERS: %d\n", maxPeers);
+    info("Failed to initialize MAX_PEERS.\n");
+    exit(1);
   }
+
+  maxPeers = atoi(value);
   
   return NULL;
 }
 
 void* initializeMaxMessageSize() {
-  char* value = getenv("MAX_MESSAGE_SIZE");
-
-  if (!value) {
-    maxMessageSize = 100;
-    info("MAX_MESSAGE_SIZE not set, using default: %d\n", maxMessageSize);
+  char const* value = getenv("MAX_MESSAGE_SIZE");
+  if (value) {
+    debug("MAX_MESSAGE_SIZE: %s\n", value);
   } else {
-    maxMessageSize = atoi(value);
-    debug("MAX_MESSAGE_SIZE: %d\n", maxMessageSize);
+    info("Failed to initialize MAX_MESSAGE_SIZE.\n");
+    exit(1);
   }
+
+  maxMessageSize = atoi(value);
   
   return NULL;
 }
