@@ -14,6 +14,7 @@
 
 struct Peer** peers;
 void* hear(void*); // Because there already exists a method in inbuilt library called listen
+void freePeers(struct Peer**);
 
 int main(int argc, char const* argv[]) {
   info("Process started\n");
