@@ -1,16 +1,6 @@
-# Student
-
-- Name: Shivu Donmardi Gorva
-- NUID: 002599393
-
-# Assignment
-
-- Course: CS 7610
-- Assignment #: 1
-
 # How to run
 
-The app can be executed exactly as mentioned in the assignment description using the commands:
+The app can be executed using the commands:
 1. `docker build . -t prj1`
 2. `docker compose up`
 
